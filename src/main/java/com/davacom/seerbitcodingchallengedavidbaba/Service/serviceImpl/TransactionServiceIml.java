@@ -70,10 +70,9 @@ public class TransactionServiceIml implements TransactionService {
         BigDecimal sum = transactionStatisticsCalculator.getSum().setScale(2,RoundingMode.HALF_UP);
         BigDecimal max = transactionStatisticsCalculator.getMax().setScale(2,RoundingMode.HALF_UP);
         BigDecimal min = transactionStatisticsCalculator.getMin().setScale(2,RoundingMode.HALF_UP);
-        BigDecimal average = transactionStatisticsCalculator.getAvg().setScale(2,RoundingMode.HALF_UP);
         long count = transactionStatisticsCalculator.getCount();
         //Average computation
-//        BigDecimal average = (count == 0) ? BigDecimal.ZERO : sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
+        BigDecimal average = (count == 0) ? BigDecimal.ZERO : sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
 
         return new TransactionStatisticsDto(sum, average, max, min, count);
     }

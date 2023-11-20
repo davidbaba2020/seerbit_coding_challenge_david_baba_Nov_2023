@@ -15,13 +15,11 @@ public class TransactionStatisticsGenerator {
     private BigDecimal sum;
     private BigDecimal max;
     private BigDecimal min;
-    private BigDecimal avg;
     private long count;
 
     public TransactionStatisticsGenerator() {
         this.sum = BigDecimal.ZERO;
         this.max = BigDecimal.ZERO;
-        this.avg = BigDecimal.ZERO;
         this.min = BigDecimal.ZERO;
         this.count = 0;
     }
@@ -40,7 +38,6 @@ public class TransactionStatisticsGenerator {
         max = max.max(amount);
         min = (min.compareTo(BigDecimal.ZERO) == 0) ? amount : min.min(amount);
         count++;
-        avg = sum.divide(BigDecimal.valueOf(count));
     }
 }
 
