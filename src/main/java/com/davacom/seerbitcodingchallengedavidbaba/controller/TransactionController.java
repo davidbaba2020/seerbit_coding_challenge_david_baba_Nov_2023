@@ -1,52 +1,38 @@
 package com.davacom.seerbitcodingchallengedavidbaba.controller;
 
 import com.davacom.seerbitcodingchallengedavidbaba.Service.TransactionService;
-import com.davacom.seerbitcodingchallengedavidbaba.dto.TransactionRequest;
-import com.davacom.seerbitcodingchallengedavidbaba.entities.TransactionStatistics;
-import org.springframework.http.HttpStatus;
+import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequestDto;
+import com.davacom.seerbitcodingchallengedavidbaba.dto.responses.TransactionStatisticsDto;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-
+@NoArgsConstructor
+@Setter
+@AllArgsConstructor
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    private final TransactionService transactionService;
-
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
+    @Autowired
+    private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<Void> createTransaction(@RequestBody TransactionRequest request) {
-        if (transactionService.createTransaction(request)) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<Void> createTransaction(@RequestBody TransactionRequestDto request) {
+        return transactionService.processTransaction(request);
     }
 
     @GetMapping("/statistics")
-    public ResponseEntity<TransactionStatistics> getStatistics() {
-        try {
-            TransactionStatistics statistics = transactionService.getStatistics();
-            return ResponseEntity.ok(statistics);
-        } catch (Exception e) {
-            // Handle any exceptions or errors gracefully
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<TransactionStatisticsDto> getTransactionStatistics() {
+        TransactionStatisticsDto statistics = transactionService.getTransactionStatistics();
+        return ResponseEntity.ok(statistics);
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAllTransactions() {
-        try {
-            transactionService.deleteAllTransactions();
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return transactionService.deleteAllTransactions();
     }
 }
