@@ -31,13 +31,7 @@ public class TransactionController {
 
     @GetMapping("/statistics")
     public ResponseEntity<TransactionStatistics> getStatistics() {
-        try {
-            TransactionStatistics statistics = transactionService.getStatistics();
-            return ResponseEntity.ok(statistics);
-        } catch (Exception e) {
-            // Handle any exceptions or errors gracefully
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+            return ResponseEntity.ok(transactionService.getStatistics());
     }
 
     @DeleteMapping

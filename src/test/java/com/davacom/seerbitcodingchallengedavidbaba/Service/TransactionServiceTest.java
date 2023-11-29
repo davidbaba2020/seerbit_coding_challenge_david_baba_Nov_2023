@@ -2,6 +2,7 @@ package com.davacom.seerbitcodingchallengedavidbaba.Service;
 
 import com.davacom.seerbitcodingchallengedavidbaba.dto.TransactionRequest;
 import com.davacom.seerbitcodingchallengedavidbaba.entities.TransactionStatistics;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 class TransactionServiceTest {
     private TransactionService transactionService;
 
@@ -39,6 +41,7 @@ class TransactionServiceTest {
         // Test if getStatistics method returns valid statistics
         transactionService.createTransaction(new TransactionRequest("100.00", Instant.now().toString()));
         TransactionStatistics statistics = transactionService.getStatistics();
+        log.info("Transaction stats: {}", statistics);
         assertNotNull(statistics);
     }
 
