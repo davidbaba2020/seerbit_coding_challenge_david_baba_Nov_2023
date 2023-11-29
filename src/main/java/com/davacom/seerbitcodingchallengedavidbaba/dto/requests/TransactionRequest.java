@@ -1,21 +1,16 @@
 package com.davacom.seerbitcodingchallengedavidbaba.dto.requests;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
+
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class TransactionRequestDto {
-
-    @NotBlank(message = "Field cannot be blank")
+@NoArgsConstructor
+public class TransactionRequest {
     private String amount;
-
-    @NotBlank(message = "Field cannot be blank")
     private String timestamp;
-
 }

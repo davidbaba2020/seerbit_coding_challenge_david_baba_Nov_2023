@@ -1,39 +1,40 @@
 package com.davacom.seerbitcodingchallengedavidbaba.controller;
 
 import com.davacom.seerbitcodingchallengedavidbaba.Service.TransactionService;
-import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequestDto;
-import com.davacom.seerbitcodingchallengedavidbaba.helperMethods.TransactionStatisticsGenerator;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequest;
+import com.davacom.seerbitcodingchallengedavidbaba.entities.TransactionStatistics;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@NoArgsConstructor
-@Setter
-@AllArgsConstructor
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/transaction")
 public class TransactionController {
 
-    @Autowired
     private TransactionService transactionService;
 
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+
     @PostMapping
-    public ResponseEntity<Void> createTransaction(@Validated @RequestBody TransactionRequestDto request) {
-        return transactionService.processTransaction(request);
+    public ResponseEntity<Void> addTransaction(@RequestBody TransactionRequest transactionRequest) {
+        boolean isAdded = transactionService.addTransaction(transactionRequest);
+        if (isAdded) {
+            return ResponseEntity.status(201).build(); // Successfully added
+        } else {
+            return ResponseEntity.noContent().build(); // Older than 30 seconds or invalid
+        }
     }
 
     @GetMapping("/statistics")
-    public ResponseEntity<TransactionStatisticsGenerator> getTransactionStatistics() {
-        TransactionStatisticsGenerator statistics = transactionService.getTransactionStatistics();
+    public ResponseEntity<TransactionStatistics> getStatistics() {
+        TransactionStatistics statistics = transactionService.getStatistics();
         return ResponseEntity.ok(statistics);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllTransactions() {
-        return transactionService.deleteAllTransactions();
+    public ResponseEntity<Void> deleteTransactions() {
+        transactionService.deleteTransactions();
+        return ResponseEntity.noContent().build();
     }
 }

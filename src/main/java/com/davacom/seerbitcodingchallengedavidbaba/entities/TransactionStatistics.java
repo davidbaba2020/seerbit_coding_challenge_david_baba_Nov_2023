@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.Objects;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class Transaction {
-    private BigDecimal amount;
-    private LocalDateTime timestamp;
+public class TransactionStatistics {
+    private BigDecimal sum;
+    private BigDecimal avg;
+    private BigDecimal max;
+    private BigDecimal min;
+    private int count;
 }
-
