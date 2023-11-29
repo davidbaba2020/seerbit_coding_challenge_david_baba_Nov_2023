@@ -1,22 +1,18 @@
 package com.davacom.seerbitcodingchallengedavidbaba.servicetest;
 
-import com.davacom.seerbitcodingchallengedavidbaba.Service.TransactionService;
 import com.davacom.seerbitcodingchallengedavidbaba.Service.serviceImpl.TransactionServiceImpl;
 import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequest;
-import com.davacom.seerbitcodingchallengedavidbaba.entities.TransactionStatistics;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 public class TransactionServiceTest {
