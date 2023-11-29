@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<Void> createTransaction(@RequestBody TransactionRequestDto request) {
+    public ResponseEntity<Void> createTransaction(@Validated @RequestBody TransactionRequestDto request) {
         return transactionService.processTransaction(request);
     }
 
