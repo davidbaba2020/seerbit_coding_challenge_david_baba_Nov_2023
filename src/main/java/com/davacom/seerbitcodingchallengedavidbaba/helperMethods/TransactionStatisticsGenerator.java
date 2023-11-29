@@ -24,6 +24,9 @@ public class TransactionStatisticsGenerator {
         this.count = 0;
     }
 
+    public TransactionStatisticsGenerator(BigDecimal sum, BigDecimal average, BigDecimal max, BigDecimal min, long count) {
+    }
+
     public synchronized void addTransaction(Transaction transaction) {
         LocalDateTime currentTimestamp = LocalDateTime.now(ZoneOffset.UTC);
         LocalDateTime thirtySecondsAgo = currentTimestamp.minusSeconds(30);

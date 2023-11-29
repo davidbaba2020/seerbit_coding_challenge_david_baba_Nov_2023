@@ -2,7 +2,6 @@ package com.davacom.seerbitcodingchallengedavidbaba.Service.serviceImpl;
 
 import com.davacom.seerbitcodingchallengedavidbaba.Service.TransactionService;
 import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequestDto;
-import com.davacom.seerbitcodingchallengedavidbaba.dto.responses.TransactionStatisticsDto;
 import com.davacom.seerbitcodingchallengedavidbaba.entities.Transaction;
 import com.davacom.seerbitcodingchallengedavidbaba.helperMethods.TransactionStatisticsGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +49,9 @@ public class TransactionServiceIml implements TransactionService {
         LocalDateTime currentTimestamp = LocalDateTime.now(ZoneOffset.UTC);
         log.info("The current time,{} ",currentTimestamp);
 
-        // This condition checks if the transaction timestamp is older than 30 seconds
+        // Checks if the transaction timestamp is older than 30 seconds
         if (timestamp.isBefore(currentTimestamp.minusSeconds(30))) {
-            log.info("The time before 30 sec,{} ",timestamp.isBefore(currentTimestamp.minusSeconds(60)));
+            log.info("{}, time is before 30 sec ago",timestamp);
             return ResponseEntity.noContent().build();
         }
 
@@ -65,16 +64,18 @@ public class TransactionServiceIml implements TransactionService {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @Override
-    public synchronized TransactionStatisticsDto getTransactionStatistics() {
+    public synchronized TransactionStatisticsGenerator getTransactionStatistics() {
         //Getting each processed value for my statistic to be returned
-        BigDecimal sum = transactionStatisticsCalculator.getSum().setScale(2,RoundingMode.HALF_UP);
-        BigDecimal max = transactionStatisticsCalculator.getMax().setScale(2,RoundingMode.HALF_UP);
-        BigDecimal min = transactionStatisticsCalculator.getMin().setScale(2,RoundingMode.HALF_UP);
+        BigDecimal sum = transactionStatisticsCalculator.getSum();
+        BigDecimal max = transactionStatisticsCalculator.getMax();
+//                .setScale(2,RoundingMode.HALF_UP);
+        BigDecimal min = transactionStatisticsCalculator.getMin();
         long count = transactionStatisticsCalculator.getCount();
         //Average computation
         BigDecimal average = (count == 0) ? BigDecimal.ZERO : sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP);
+        log.info("The stats,sum: {}, max: {}, min: {}, aver: {}", sum,max,min,average);
 
-        return new TransactionStatisticsDto(sum, average, max, min, count);
+        return new TransactionStatisticsGenerator(sum, average, max, min, count);
     }
 
     @Override

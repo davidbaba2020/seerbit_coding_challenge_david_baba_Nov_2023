@@ -2,7 +2,7 @@ package com.davacom.seerbitcodingchallengedavidbaba.controller;
 
 import com.davacom.seerbitcodingchallengedavidbaba.Service.TransactionService;
 import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequestDto;
-import com.davacom.seerbitcodingchallengedavidbaba.dto.responses.TransactionStatisticsDto;
+import com.davacom.seerbitcodingchallengedavidbaba.helperMethods.TransactionStatisticsGenerator;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,8 +27,8 @@ public class TransactionController {
     }
 
     @GetMapping("/statistics")
-    public ResponseEntity<TransactionStatisticsDto> getTransactionStatistics() {
-        TransactionStatisticsDto statistics = transactionService.getTransactionStatistics();
+    public ResponseEntity<TransactionStatisticsGenerator> getTransactionStatistics() {
+        TransactionStatisticsGenerator statistics = transactionService.getTransactionStatistics();
         return ResponseEntity.ok(statistics);
     }
 

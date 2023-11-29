@@ -5,6 +5,7 @@ import com.davacom.seerbitcodingchallengedavidbaba.Service.serviceImpl.Transacti
 import com.davacom.seerbitcodingchallengedavidbaba.controller.TransactionController;
 import com.davacom.seerbitcodingchallengedavidbaba.dto.requests.TransactionRequestDto;
 import com.davacom.seerbitcodingchallengedavidbaba.dto.responses.TransactionStatisticsDto;
+import com.davacom.seerbitcodingchallengedavidbaba.helperMethods.TransactionStatisticsGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ class TransactionIntegrationTest {
         // Prepare an invalid JSON request
         TransactionRequestDto request = new TransactionRequestDto();
         request.setAmount(null);
-        request.setTimestamp("2023-05-30T12:00:00.000Z");
+        request.setTimestamp("2023-11-30T12:00:00.000Z");
 
         ResponseEntity<Void> response = transactionController.createTransaction(request);
 
@@ -55,11 +56,11 @@ class TransactionIntegrationTest {
     }
 
     @Test
-    void createTransaction_WithUnparsableFields_ReturnsUnprocessableEntityResponse() {
+    void createTransaction_WithInvalidFields_ReturnsUnprocessableEntityResponse() {
         // Prepare a request with an invalid timestamp
         TransactionRequestDto request = new TransactionRequestDto();
-        request.setAmount("10.00");
-        request.setTimestamp("invalid");
+        request.setAmount("120.00");
+        request.setTimestamp("Hello");
 
         ResponseEntity<Void> response = transactionController.createTransaction(request);
 
@@ -71,10 +72,10 @@ class TransactionIntegrationTest {
     @Test
     public void getTransactionStatistics_ReturnsOkResponseWithStatistics() {
         // Create a mock TransactionStatisticsDto object
-        TransactionStatisticsDto expectedStatistics = new TransactionStatisticsDto();
+        TransactionStatisticsGenerator expectedStatistics = new TransactionStatisticsGenerator();
         // Set expected values for the statistics object
         expectedStatistics.setSum(new BigDecimal("100.00"));
-        expectedStatistics.setAverage(new BigDecimal("50.00"));
+//        expectedStatistics.setAverage(new BigDecimal("50.00"));
         expectedStatistics.setMax(new BigDecimal("75.00"));
         expectedStatistics.setMin(new BigDecimal("25.00"));
         expectedStatistics.setCount(2);
@@ -86,7 +87,7 @@ class TransactionIntegrationTest {
         TransactionController controller = new TransactionController(transactionService);
 
         // Call the method under test
-        ResponseEntity<TransactionStatisticsDto> response = controller.getTransactionStatistics();
+        ResponseEntity<TransactionStatisticsGenerator> response = controller.getTransactionStatistics();
 
         // Verify that the mock TransactionService's getTransactionStatistics method was called
         verify(transactionService, times(1)).getTransactionStatistics();
